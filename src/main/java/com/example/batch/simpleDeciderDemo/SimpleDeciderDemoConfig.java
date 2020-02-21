@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SimpleDeciderDemoConfig {
     private static final String applicationName = "SimpleDecider";
-    private static final String job1Name = applicationName + "_job1";
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;

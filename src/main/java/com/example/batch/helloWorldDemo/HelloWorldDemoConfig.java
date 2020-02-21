@@ -42,7 +42,7 @@ public class HelloWorldDemoConfig {
         return stepBuilderFactory.get(CommonUtil.getStepName(jobName, 0))
                 .tasklet(new Tasklet() {
                     @Override
-                    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+                    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
                         System.out.println("Hello spring batch !!!");
                         return RepeatStatus.FINISHED;
                     }

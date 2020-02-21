@@ -1,7 +1,7 @@
 package com.example.batch.jobSplitDemo;
 
 import com.example.batch.common.CommonUtil;
-import com.example.batch.common.PrintStatusProcessor;
+import com.example.batch.common.PrintThreadIDProcessor;
 import com.example.batch.common.StepService;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -20,7 +20,7 @@ public class JobSplitDemoConfig {
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
     @Autowired
-    private PrintStatusProcessor printStatusProcessor;
+    private PrintThreadIDProcessor printStatusProcessor;
     @Autowired
     private StepService stepService;
 
