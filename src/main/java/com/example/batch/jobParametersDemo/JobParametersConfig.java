@@ -25,7 +25,7 @@ public class JobParametersConfig {
     private MyStepListener myStepListener;
 
     @Bean
-    public Job job1(){
+    public Job job1() {
         String jobName = CommonUtil.getJobName(applicationName, 1);
         stepService.setProcessor(printParametersProcessor, myStepListener);
         return jobBuilderFactory.get(jobName)

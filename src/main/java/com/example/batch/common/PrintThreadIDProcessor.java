@@ -5,7 +5,7 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PrintThreadIDProcessor implements IProcessor{
+public class PrintThreadIDProcessor implements IProcessor {
     @Override
     public void process(StepContribution stepContribution, ChunkContext chunkContext) {
         System.out.println("Step [" + chunkContext.getStepContext().getStepName() + "] execute on Thread [" + Thread.currentThread().getId() + "]");
