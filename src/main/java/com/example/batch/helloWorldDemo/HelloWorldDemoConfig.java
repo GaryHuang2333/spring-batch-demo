@@ -1,7 +1,7 @@
 package com.example.batch.helloWorldDemo;
 
 
-import com.example.batch.common.CommonUtil;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;

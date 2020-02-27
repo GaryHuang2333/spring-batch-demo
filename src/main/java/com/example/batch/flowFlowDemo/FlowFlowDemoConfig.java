@@ -1,7 +1,7 @@
 package com.example.batch.flowFlowDemo;
 
-import com.example.batch.common.CommonUtil;
-import com.example.batch.common.StepService;
+import com.example.batch.common.services.StepService;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;

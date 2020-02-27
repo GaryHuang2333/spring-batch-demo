@@ -1,8 +1,8 @@
 package com.example.batch.jobNestedDemo;
 
-import com.example.batch.common.CommonUtil;
-import com.example.batch.common.PrintThreadIDProcessor;
-import com.example.batch.common.StepService;
+import com.example.batch.common.services.StepService;
+import com.example.batch.common.services.processService.PrintThreadIDProcessService;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CatJobConfig {
         String catchFishStepName = CommonUtil.appendLocalDateTimeString("catchFishStepName");
         String catchMouseStepName = CommonUtil.appendLocalDateTimeString("catchMouseStepName");
 
-        stepService.setProcessor(new PrintThreadIDProcessor());
+        stepService.setProcessor(new PrintThreadIDProcessService());
         return jobBuilderFactory.get(catJobName)
                 .start(stepService.genStep(catchFishStepName))
                 .next(stepService.genStep(catchMouseStepName))

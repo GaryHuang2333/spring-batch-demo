@@ -1,5 +1,6 @@
-package com.example.batch.common;
+package com.example.batch.common.services;
 
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -14,22 +15,22 @@ public class StepService {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     //    @Autowired
-    private IProcessor processor;
+    private IProcessService processor;
     //    @Autowired
     private StepExecutionListener stepListener;
 
-    public void setProcessor(IProcessor processor) {
+    public void setProcessor(IProcessService processor) {
         this.processor = processor;
     }
 
-    public void setProcessor(IProcessor processor, StepExecutionListener stepListener) {
+    public void setProcessor(IProcessService processor, StepExecutionListener stepListener) {
         this.processor = processor;
         this.stepListener = stepListener;
     }
 
     public Step getStep(String prefix, int stepNo, boolean dateInd) {
         String stepName = CommonUtil.getStepName(prefix, stepNo, dateInd);
-        return genStep(stepName);
+        return genStep(CommonUtil.trimNameSize(stepName));
     }
 
     public Step getStep(String prefix, int stepNo) {

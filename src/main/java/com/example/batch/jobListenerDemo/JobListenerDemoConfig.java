@@ -1,8 +1,9 @@
 package com.example.batch.jobListenerDemo;
 
-import com.example.batch.common.CommonUtil;
-import com.example.batch.common.IProcessor;
-import com.example.batch.common.StepService;
+import com.example.batch.common.listeners.MyStepListener;
+import com.example.batch.common.services.IProcessService;
+import com.example.batch.common.services.StepService;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -10,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,8 +30,8 @@ public class JobListenerDemoConfig {
     @Autowired
     private StepService stepService;
     @Autowired
-    private IProcessor printThreadIDProcessor;
-
+    @Qualifier("PrintThreadIDProcessService")
+    private IProcessService printThreadIDProcessService;
 
     @Bean
     public Job job1() {
@@ -53,7 +55,7 @@ public class JobListenerDemoConfig {
         String stepName = CommonUtil.getStepName(jobName, 1);
         return stepBuilderFactory.get(stepName)
                 .tasklet((stepContribution, chunkContext) -> {
-                    printThreadIDProcessor.process(stepContribution, chunkContext);
+                    printThreadIDProcessService.process(stepContribution, chunkContext);
                     return RepeatStatus.FINISHED;
                 })
                 .listener(myStepListener)

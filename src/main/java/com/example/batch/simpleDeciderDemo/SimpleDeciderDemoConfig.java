@@ -1,7 +1,7 @@
 package com.example.batch.simpleDeciderDemo;
 
-import com.example.batch.common.CommonUtil;
-import com.example.batch.common.StepService;
+import com.example.batch.common.services.StepService;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;

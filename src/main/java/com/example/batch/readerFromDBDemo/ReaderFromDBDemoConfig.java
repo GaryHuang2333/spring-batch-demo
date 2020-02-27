@@ -1,12 +1,19 @@
 package com.example.batch.readerFromDBDemo;
 
-import com.example.batch.common.CommonUtil;
+import com.example.batch.common.entities.Staff;
+import com.example.batch.common.itemProcessor.GenericItemProcessor;
+import com.example.batch.common.itemWriter.GenericItemWriter;
+import com.example.batch.common.services.IProcessService;
+import com.example.batch.common.services.StaffDataService;
+import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,9 +25,12 @@ public class ReaderFromDBDemoConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
-    private MyWriter myWriter;
+    private GenericItemWriter genericItemWriter;
     @Autowired
-    private MyProcessor myProcessor;
+    private GenericItemProcessor genericItemProcessor;
+    @Autowired
+    @Qualifier("StaffProcessService")
+    private IProcessService staffProcessService;
     @Autowired
     private StaffDataService staffDataService;
 
@@ -37,9 +47,14 @@ public class ReaderFromDBDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(2)
                 .reader(jdbcPagingItemReader())
-                .processor(myProcessor)
-                .writer(myWriter)
+                .processor(processor1())
+                .writer(genericItemWriter)
                 .build();
+    }
+
+    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
+        genericItemProcessor.setProcessService(staffProcessService);
+        return genericItemProcessor;
     }
 
     @Bean

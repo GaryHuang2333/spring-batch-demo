@@ -1,7 +1,12 @@
-package com.example.batch.readerFromDBDemo;
+package com.example.batch.common.services;
 
+import com.example.batch.common.entities.Staff;
 import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.support.MySqlPagingQueryProvider;
+import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -42,4 +47,30 @@ public class StaffDataService {
                 .staffNo(resultSet.getString("staff_no"))
                 .build();
     }
+
+    public FieldSetMapper<Staff> getFieldSetMapper() {
+        return fieldSet -> Staff.builder()
+                .id(fieldSet.readInt("id"))
+                .age(fieldSet.readInt("age"))
+                .department(fieldSet.readString("department"))
+                .gender(fieldSet.readString("gender"))
+                .name(fieldSet.readString("name"))
+                .comment(fieldSet.readString("comment"))
+                .staffNo(fieldSet.readString("staff_no")).build();
+    }
+
+    public DelimitedLineTokenizer getDelimitedLineTokenizer() {
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        tokenizer.setNames(new String[]{"id", "age", "department", "gender", "name", "comment", "staff_no"});
+        return tokenizer;
+    }
+
+    public LineMapper<Staff> getStaffLineMapper() {
+        DefaultLineMapper mapper = new DefaultLineMapper();
+        mapper.setLineTokenizer(getDelimitedLineTokenizer());
+        mapper.setFieldSetMapper(getFieldSetMapper());
+        mapper.afterPropertiesSet();
+        return mapper;
+    }
+
 }

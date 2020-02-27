@@ -1,4 +1,4 @@
-package com.example.batch.readerFromDBDemo;
+package com.example.batch.common.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

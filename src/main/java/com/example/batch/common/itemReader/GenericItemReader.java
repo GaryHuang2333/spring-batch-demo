@@ -1,4 +1,4 @@
-package com.example.batch.simpleChunkJobDemo;
+package com.example.batch.common.itemReader;
 
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
@@ -10,14 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class MyItemReader implements ItemReader<String> {
-    private LinkedList<String> itemList;
+public class GenericItemReader<T> implements ItemReader {
+    private LinkedList<T> itemList;
 
     @Override
-    public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+    public T read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if (itemList.size() > 0) {
-            String value = itemList.pop();
-            System.out.println("#### reader content = [" + value + "]");
+            T value = itemList.pop();
+            System.out.println("#### reader content = [" + value.toString() + "]");
             return value;
         } else {
             System.out.println("#### reader content is empty");
@@ -25,11 +25,11 @@ public class MyItemReader implements ItemReader<String> {
         }
     }
 
-    public List<String> getItemList() {
+    public List<T> getItemList() {
         return itemList;
     }
 
-    public void setItemList(LinkedList<String> itemList) {
+    public void setItemList(LinkedList<T> itemList) {
         this.itemList = itemList;
     }
 }
