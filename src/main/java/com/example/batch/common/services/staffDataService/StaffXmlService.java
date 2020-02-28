@@ -6,7 +6,6 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.xstream.XStreamMarshaller;
-import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,10 +23,10 @@ public class StaffXmlService implements IStaffDataService {
     }
 
     private XStreamMarshaller getUnmarshaller() {
-        Map<String, Class > aliasesMap = new HashMap<>();
+        Map<String, Class> aliasesMap = new HashMap<>();
         aliasesMap.put("staff", Staff.class);
 
-        XStreamMarshaller marshaller  = new XStreamMarshaller();
+        XStreamMarshaller marshaller = new XStreamMarshaller();
         marshaller.setAliases(aliasesMap);
 
         return marshaller;

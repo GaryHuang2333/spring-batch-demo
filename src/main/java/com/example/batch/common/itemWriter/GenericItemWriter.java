@@ -11,7 +11,7 @@ public class GenericItemWriter<T> implements ItemWriter<T> {
     public void write(List<? extends T> list) throws Exception {
         System.out.println("#### writer size = " + list.size());
         System.out.println("#### writer content = {");
-        for (T content : list){
+        for (T content : list) {
             System.out.println("#### writer content ====" + content.toString());
         }
         System.out.println("#### writer content = }");

@@ -1,0 +1,11 @@
+id,age,department,gender,name,comment,staff_no
+225,26,dev,male,jerry,,001
+226,30,dev,male,tom,,002
+227,23,sale,female,rose,,003
+228,28,sale,male,jack,,004
+229,28,hr,male,tonny,,005
+230,38,hr,male,jimmy,,006
+231,28,dev,male,john,,007
+232,26,dev,female,sisi,,008
+233,28,sale,female,lily,,009
+234,35,sale,male,neal,,010
