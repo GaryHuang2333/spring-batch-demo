@@ -17,7 +17,7 @@ public class StaffMultiFileService implements IStaffDataService {
     @Qualifier("StaffFlatFileService")
     private IStaffDataService staffFlatFileService;
 
-    @Value("classpath*:/staff/multi_staff/staff*.csv")
+    @Value("classpath*:/staff/input/multi_staff/staff*.csv")
     private Resource[] resources;
 
     @Override

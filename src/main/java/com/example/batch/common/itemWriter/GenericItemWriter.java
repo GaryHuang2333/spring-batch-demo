@@ -9,11 +9,11 @@ import java.util.List;
 public class GenericItemWriter<T> implements ItemWriter<T> {
     @Override
     public void write(List<? extends T> list) throws Exception {
-        System.out.println("#### writer size = " + list.size());
-        System.out.println("#### writer content = {");
+        System.out.println("#### writerDemo size = " + list.size());
+        System.out.println("#### writerDemo content = {");
         for (T content : list) {
-            System.out.println("#### writer content ====" + content.toString());
+            System.out.println("#### writerDemo content ====" + content.toString());
         }
-        System.out.println("#### writer content = }");
+        System.out.println("#### writerDemo content = }");
     }
 }

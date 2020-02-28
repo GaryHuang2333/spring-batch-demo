@@ -17,10 +17,10 @@ public class GenericItemReader<T> implements ItemReader {
     public T read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if (itemList.size() > 0) {
             T value = itemList.pop();
-            System.out.println("#### reader content = [" + value.toString() + "]");
+            System.out.println("#### readerDemo content = [" + value.toString() + "]");
             return value;
         } else {
-            System.out.println("#### reader content is empty");
+            System.out.println("#### readerDemo content is empty");
             return null;
         }
     }

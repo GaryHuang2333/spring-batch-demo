@@ -30,7 +30,7 @@ public class StepService {
 
     public Step getStep(String prefix, int stepNo, boolean dateInd) {
         String stepName = CommonUtil.getStepName(prefix, stepNo, dateInd);
-        return genStep(CommonUtil.trimNameSize(stepName));
+        return genStep(stepName);
     }
 
     public Step getStep(String prefix, int stepNo) {

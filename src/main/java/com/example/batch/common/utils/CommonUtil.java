@@ -44,11 +44,14 @@ public class CommonUtil {
     }
 
     public static String getStepName(String prefix, int stepNo, boolean dateInd) {
+        String stepName = "";
         if (dateInd) {
-            return prefix + "_step_" + Integer.toString(stepNo) + "_[" + now + "]";
+            stepName = prefix + "_step_" + Integer.toString(stepNo) + "_[" + now + "]";
         } else {
-            return prefix + "_step_" + Integer.toString(stepNo);
+            stepName = prefix + "_step_" + Integer.toString(stepNo);
         }
+
+        return trimNameSize(stepName);
     }
 
     public static String getFlowName(String jobName, int flowNo) {

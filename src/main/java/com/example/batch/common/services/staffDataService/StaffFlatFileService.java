@@ -16,7 +16,7 @@ public class StaffFlatFileService implements IStaffDataService {
     @Override
     public ItemReader<Staff> getItemReader() {
         FlatFileItemReader<Staff> reader = new FlatFileItemReader();
-        reader.setResource(new ClassPathResource("staff/staff.csv"));
+        reader.setResource(new ClassPathResource("staff/input/staff.csv"));
         reader.setLinesToSkip(1);
         reader.setLineMapper(getStaffLineMapper());
 

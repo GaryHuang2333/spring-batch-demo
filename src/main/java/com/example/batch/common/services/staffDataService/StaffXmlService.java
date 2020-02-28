@@ -16,13 +16,13 @@ public class StaffXmlService implements IStaffDataService {
     @Override
     public ItemReader<Staff> getItemReader() {
         StaxEventItemReader reader = new StaxEventItemReader();
-        reader.setResource(new ClassPathResource("staff/staff.xml"));
+        reader.setResource(new ClassPathResource("staff/input/staff.xml"));
         reader.setFragmentRootElementName("staff");
-        reader.setUnmarshaller(getUnmarshaller());
+        reader.setUnmarshaller(getXStreamMarshaller());
         return reader;
     }
 
-    private XStreamMarshaller getUnmarshaller() {
+    public XStreamMarshaller getXStreamMarshaller() {
         Map<String, Class> aliasesMap = new HashMap<>();
         aliasesMap.put("staff", Staff.class);
 
