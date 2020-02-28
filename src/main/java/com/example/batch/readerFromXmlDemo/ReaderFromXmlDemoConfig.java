@@ -1,4 +1,4 @@
-package com.example.batch.readerFromFlatFileDemo;
+package com.example.batch.readerFromXmlDemo;
 
 import com.example.batch.common.entities.Staff;
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ReaderFromFlatFileConfig {
-    private static final String applicationName = "ReaderFromFlatFile";
+public class ReaderFromXmlDemoConfig {
+    private static final String applicationName = "ReaderFromXml";
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
     @Autowired
@@ -32,8 +32,9 @@ public class ReaderFromFlatFileConfig {
     @Qualifier("StaffProcessService")
     private IProcessService staffProcessService;
     @Autowired
-    @Qualifier("StaffFlatFileService")
-    private IStaffDataService staffFlatFileService;
+    @Qualifier("StaffXmlService")
+    private IStaffDataService staffXmlService;
+
 
     @Bean
     public Job job1() {
@@ -61,6 +62,6 @@ public class ReaderFromFlatFileConfig {
 
     @Bean
     public ItemReader<Staff> reader1(String stepName) {
-        return staffFlatFileService.getItemReader();
+        return staffXmlService.getItemReader();
     }
 }

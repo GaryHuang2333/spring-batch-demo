@@ -4,14 +4,14 @@ import com.example.batch.common.entities.Staff;
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
 import com.example.batch.common.itemWriter.GenericItemWriter;
 import com.example.batch.common.services.IProcessService;
-import com.example.batch.common.services.StaffDataService;
+import com.example.batch.common.services.IStaffDataService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,8 @@ public class ReaderFromDBDemoConfig {
     @Qualifier("StaffProcessService")
     private IProcessService staffProcessService;
     @Autowired
-    private StaffDataService staffDataService;
+    @Qualifier("StaffDBService")
+    private IStaffDataService staffDBService;
 
     @Bean
     public Job job1() {
@@ -58,15 +59,8 @@ public class ReaderFromDBDemoConfig {
     }
 
     @Bean
-    public JdbcPagingItemReader<Staff> jdbcPagingItemReader() {
-
-        JdbcPagingItemReader<Staff> reader = new JdbcPagingItemReader<>();
-        reader.setDataSource(staffDataService.getDataSource());
-        reader.setFetchSize(3);
-        reader.setQueryProvider(staffDataService.getAllStaffProvider());
-        reader.setRowMapper(staffDataService.getStaffRowMapper());
-
-        return reader;
+    public ItemReader<Staff> jdbcPagingItemReader() {
+        return staffDBService.getItemReader();
     }
 
 }

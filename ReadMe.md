@@ -8,5 +8,8 @@
 7. jobListenerDemo
 8. jobParametersDemo
 9. simpleChunkJobDemo
+10. readerFromDBDemo
+11. readerFromFlatFileDemo
+12. readerFromXmlDemo
 
 refer(bilibili.com/video/av49478601)
