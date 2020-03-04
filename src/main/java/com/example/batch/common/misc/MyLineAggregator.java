@@ -4,7 +4,6 @@ import com.example.batch.common.entities.Staff;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.batch.item.file.transform.LineAggregator;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 @Component("MyLineAggregator")

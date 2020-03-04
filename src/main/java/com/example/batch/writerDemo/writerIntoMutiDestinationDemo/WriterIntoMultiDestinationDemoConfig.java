@@ -3,7 +3,6 @@ package com.example.batch.writerDemo.writerIntoMutiDestinationDemo;
 import com.example.batch.common.entities.Staff;
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
 import com.example.batch.common.services.IProcessService;
-import com.example.batch.common.services.IStaffDataService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -31,26 +30,26 @@ public class WriterIntoMultiDestinationDemoConfig {
     @Qualifier("StaffProcessService")
     private IProcessService staffProcessService;
     @Autowired
-    @Qualifier("StaffFlatFileService")
-    private IStaffDataService staffFlatFileService;
+    @Qualifier("myFlatFileItemReader")
+    private ItemReader myFlatFileItemReader;
 
     @Autowired
-    @Qualifier("MyMultiItemWriter")
-    private ItemStreamWriter<Staff> myMultiItemWriter;
+    @Qualifier("myCompositeItemWriter")
+    private ItemStreamWriter<Staff> myCompositeItemWriter;
 
     @Autowired
-    @Qualifier("MyClassifierMultiItemWriter")
-    private ItemWriter<Staff> myClassifierMultiItemWriter;
+    @Qualifier("myClassifierCompositeItemWriter")
+    private ItemWriter<Staff> myClassifierCompositeItemWriter;
 
     @Autowired
-    @Qualifier("MyFlatFileItemWriter")
+    @Qualifier("myFlatFileItemWriter")
     private ItemStreamWriter<Staff> myFlatFileItemWriter;
 
     @Autowired
-    @Qualifier("MyXmlItemWriter")
-    private ItemStreamWriter<Staff> myXmlItemWriter;
+    @Qualifier("myStaxEventItemWriter")
+    private ItemStreamWriter<Staff> myStaxEventItemWriter;
 
-//    @Bean
+    //    @Bean
     public Job job1() {
         String jobName = CommonUtil.getJobName(applicationName, 1);
         return jobBuilderFactory.get(jobName)
@@ -62,9 +61,9 @@ public class WriterIntoMultiDestinationDemoConfig {
         String stepName = CommonUtil.getStepName(jobName, 1);
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
-                .reader(reader1(stepName))
+                .reader(myFlatFileItemReader)
                 .processor(processor1())
-                .writer(myMultiItemWriter)
+                .writer(myCompositeItemWriter)
                 .build();
     }
 
@@ -80,11 +79,11 @@ public class WriterIntoMultiDestinationDemoConfig {
         String stepName = CommonUtil.getStepName(jobName, 2);
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
-                .reader(reader1(stepName))
+                .reader(myFlatFileItemReader)
                 .processor(processor1())
-                .writer(myClassifierMultiItemWriter)
+                .writer(myClassifierCompositeItemWriter)
                 .stream(myFlatFileItemWriter)
-                .stream(myXmlItemWriter)
+                .stream(myStaxEventItemWriter)
                 .build();
     }
 
@@ -92,11 +91,5 @@ public class WriterIntoMultiDestinationDemoConfig {
         genericItemProcessor.setProcessService(staffProcessService);
         return genericItemProcessor;
     }
-
-    @Bean
-    public ItemReader<Staff> reader1(String stepName) {
-        return staffFlatFileService.getItemReader();
-    }
-
 
 }

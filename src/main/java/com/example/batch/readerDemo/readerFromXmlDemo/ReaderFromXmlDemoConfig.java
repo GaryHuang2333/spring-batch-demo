@@ -2,9 +2,7 @@ package com.example.batch.readerDemo.readerFromXmlDemo;
 
 import com.example.batch.common.entities.Staff;
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.itemWriter.GenericItemWriter;
 import com.example.batch.common.services.IProcessService;
-import com.example.batch.common.services.IStaffDataService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -12,6 +10,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +26,14 @@ public class ReaderFromXmlDemoConfig {
     @Autowired
     private GenericItemProcessor genericItemProcessor;
     @Autowired
-    private GenericItemWriter genericItemWriter;
+    @Qualifier("myGenericItemWriter")
+    private ItemWriter myGenericItemWriter;
     @Autowired
     @Qualifier("StaffProcessService")
     private IProcessService staffProcessService;
     @Autowired
-    @Qualifier("StaffXmlService")
-    private IStaffDataService staffXmlService;
+    @Qualifier("myStaxEventItemReader")
+    private ItemReader myStaxEventItemReader;
 
 
     @Bean
@@ -48,9 +48,9 @@ public class ReaderFromXmlDemoConfig {
         String stepName = CommonUtil.getStepName(jobName, 1);
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(3)
-                .reader(reader1(stepName))
+                .reader(myStaxEventItemReader)
                 .processor(processor1())
-                .writer(genericItemWriter)
+                .writer(myGenericItemWriter)
                 .build();
     }
 
@@ -58,10 +58,5 @@ public class ReaderFromXmlDemoConfig {
         genericItemProcessor.setProcessService(staffProcessService);
         return genericItemProcessor;
 
-    }
-
-    @Bean
-    public ItemReader<Staff> reader1(String stepName) {
-        return staffXmlService.getItemReader();
     }
 }

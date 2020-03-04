@@ -14,20 +14,23 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service("StaffDBService")
+@Service("staffDBService")
 public class StaffDBService implements IStaffDataService {
     @Autowired
     private DataSource dataSource;
 
     @Override
-    public ItemReader<Staff> getItemReader() {
-        JdbcPagingItemReader<Staff> reader = new JdbcPagingItemReader<>();
-        reader.setDataSource(dataSource);
-        reader.setFetchSize(3);
-        reader.setQueryProvider(getAllStaffProvider());
-        reader.setRowMapper(getStaffRowMapper());
+    public ItemReader setupItemReader(ItemReader itemReader) {
+        if (itemReader instanceof JdbcPagingItemReader) {
+            JdbcPagingItemReader jdbcPagingItemReader = (JdbcPagingItemReader) itemReader;
+            jdbcPagingItemReader.setDataSource(dataSource);
+            jdbcPagingItemReader.setFetchSize(3);
+            jdbcPagingItemReader.setQueryProvider(getAllStaffProvider());
+            jdbcPagingItemReader.setRowMapper(getStaffRowMapper());
+            itemReader = jdbcPagingItemReader;
+        }
 
-        return reader;
+        return itemReader;
     }
 
 

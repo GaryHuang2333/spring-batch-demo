@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 @Component("MyClassifier")
 public class MyClassifier implements Classifier<Staff, ItemStreamWriter> {
     @Autowired
-    @Qualifier("MyFlatFileItemWriter")
+    @Qualifier("myFlatFileItemWriter")
     private ItemStreamWriter<Staff> myFlatFileItemWriter;
 
     @Autowired
-    @Qualifier("MyXmlItemWriter")
-    private ItemStreamWriter<Staff> myXmlItemWriter;
+    @Qualifier("myStaxEventItemWriter")
+    private ItemStreamWriter<Staff> myStaxEventItemWriter;
 
     @Override
     public ItemStreamWriter classify(Staff staff) {
-        ItemStreamWriter writer = staff.getId() % 2 == 0 ? myFlatFileItemWriter : myXmlItemWriter;
+        ItemStreamWriter writer = staff.getId() % 2 == 0 ? myFlatFileItemWriter : myStaxEventItemWriter;
         return writer;
     }
 }

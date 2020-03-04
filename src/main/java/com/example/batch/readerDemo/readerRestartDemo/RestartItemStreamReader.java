@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component("RestartItemStreamReader")
 public class RestartItemStreamReader implements ItemStreamReader<Staff> {
     @Autowired
-    @Qualifier("StaffRestartService")
+    @Qualifier("staffRestartService")
     private IStaffDataService staffRestartService;
 
     private FlatFileItemReader<Staff> reader;

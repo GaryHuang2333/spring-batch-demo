@@ -3,6 +3,7 @@ package com.example.batch.common.itemWriter;
 import com.example.batch.common.entities.Staff;
 import com.example.batch.common.services.staffDataService.StaffXmlService;
 import org.springframework.batch.item.ItemStreamWriter;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
@@ -25,6 +26,10 @@ import java.util.Arrays;
 public class ItemWriterConfig {
     private static final String filePath = "./src/main/resources/staff/output/";
 
+    /**
+     * Dependencies
+     */
+
     @Autowired
     private DataSource dataSource;
 
@@ -36,10 +41,19 @@ public class ItemWriterConfig {
     private StaffXmlService staffXmlService;
 
     @Autowired
+    private GenericItemWriter genericItemWriter;
+
+    @Autowired
     @Qualifier("MyClassifier")
     private Classifier<Staff, ItemStreamWriter> myClassifier;
 
-    @Bean("MyJdbcBatchItemWriter")
+
+    /**
+     * Bean Writer register into spring container
+     */
+
+    // JDBC item writer
+    @Bean("myJdbcBatchItemWriter")
     public JdbcBatchItemWriter<Staff> myJdbcBatchItemWriter() {
         JdbcBatchItemWriter<Staff> writer = new JdbcBatchItemWriter();
         writer.setDataSource(dataSource);
@@ -50,7 +64,8 @@ public class ItemWriterConfig {
         return writer;
     }
 
-    @Bean("MyFlatFileItemWriter")
+    // Flat file item writer
+    @Bean("myFlatFileItemWriter")
     public FlatFileItemWriter<Staff> myFlatFileItemWriter() throws Exception {
         ClassPathResource classPathResource = new ClassPathResource("staff.data");
         //String classPathResourcePath = classPathResource.getFile().getAbsolutePath();
@@ -67,8 +82,9 @@ public class ItemWriterConfig {
         return writer;
     }
 
-    @Bean("MyXmlItemWriter")
-    public StaxEventItemWriter<Staff> myXmlItemWriter() throws Exception {
+    // Xml item writer
+    @Bean("myStaxEventItemWriter")
+    public StaxEventItemWriter<Staff> myStaxEventItemWriter() throws Exception {
         FileSystemResource fileSystemResource = new FileSystemResource(filePath + "staff.xml");
         String fileSystemResourcePath = fileSystemResource.getFile().getAbsolutePath();
         System.out.println(">>>> FlatFile file at : " + fileSystemResourcePath);
@@ -82,19 +98,27 @@ public class ItemWriterConfig {
         return writer;
     }
 
-    @Bean("MyMultiItemWriter")
-    public CompositeItemWriter<Staff> myMultiItemWriter() throws Exception {
+    // Multiple items Item writer
+    @Bean("myCompositeItemWriter")
+    public CompositeItemWriter<Staff> myCompositeItemWriter() throws Exception {
         CompositeItemWriter<Staff> writer = new CompositeItemWriter();
-        writer.setDelegates(Arrays.asList(myXmlItemWriter(), myFlatFileItemWriter()));
+        writer.setDelegates(Arrays.asList(myStaxEventItemWriter(), myFlatFileItemWriter()));
 
         return writer;
     }
 
-    @Bean("MyClassifierMultiItemWriter")
-    public ClassifierCompositeItemWriter myClassifierMultiItemWriter() {
+    // Multiple items Item writer with classifier
+    @Bean("myClassifierCompositeItemWriter")
+    public ClassifierCompositeItemWriter myClassifierCompositeItemWriter() {
         ClassifierCompositeItemWriter writer = new ClassifierCompositeItemWriter();
         writer.setClassifier(myClassifier);
 
         return writer;
+    }
+
+    // most common item writer
+    @Bean("myGenericItemWriter")
+    public ItemWriter myGenericItemWriter() {
+        return genericItemWriter;
     }
 }

@@ -11,16 +11,20 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-@Service("StaffFlatFileService")
+@Service("staffFlatFileService")
 public class StaffFlatFileService implements IStaffDataService {
-    @Override
-    public ItemReader<Staff> getItemReader() {
-        FlatFileItemReader<Staff> reader = new FlatFileItemReader();
-        reader.setResource(new ClassPathResource("staff/input/staff.csv"));
-        reader.setLinesToSkip(1);
-        reader.setLineMapper(getStaffLineMapper());
 
-        return reader;
+    @Override
+    public ItemReader setupItemReader(ItemReader itemReader) {
+        if (itemReader instanceof FlatFileItemReader) {
+            FlatFileItemReader flatFileItemReader = (FlatFileItemReader) itemReader;
+            flatFileItemReader.setResource(new ClassPathResource("staff/input/staff.csv"));
+            flatFileItemReader.setLinesToSkip(1);
+            flatFileItemReader.setLineMapper(getStaffLineMapper());
+            itemReader = flatFileItemReader;
+        }
+
+        return itemReader;
     }
 
     private LineMapper<Staff> getStaffLineMapper() {

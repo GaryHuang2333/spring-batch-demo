@@ -11,15 +11,20 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service("StaffXmlService")
+@Service("staffXmlService")
 public class StaffXmlService implements IStaffDataService {
+
     @Override
-    public ItemReader<Staff> getItemReader() {
-        StaxEventItemReader reader = new StaxEventItemReader();
-        reader.setResource(new ClassPathResource("staff/input/staff.xml"));
-        reader.setFragmentRootElementName("staff");
-        reader.setUnmarshaller(getXStreamMarshaller());
-        return reader;
+    public ItemReader setupItemReader(ItemReader itemReader) {
+        if (itemReader instanceof StaxEventItemReader) {
+            StaxEventItemReader staxEventItemReader = (StaxEventItemReader) itemReader;
+            staxEventItemReader.setResource(new ClassPathResource("staff/input/staff.xml"));
+            staxEventItemReader.setFragmentRootElementName("staff");
+            staxEventItemReader.setUnmarshaller(getXStreamMarshaller());
+            itemReader = staxEventItemReader;
+        }
+
+        return itemReader;
     }
 
     public XStreamMarshaller getXStreamMarshaller() {

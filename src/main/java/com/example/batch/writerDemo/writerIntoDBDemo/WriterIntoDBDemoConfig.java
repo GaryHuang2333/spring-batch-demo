@@ -3,7 +3,6 @@ package com.example.batch.writerDemo.writerIntoDBDemo;
 import com.example.batch.common.entities.Staff;
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
 import com.example.batch.common.services.IProcessService;
-import com.example.batch.common.services.IStaffDataService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -30,11 +29,11 @@ public class WriterIntoDBDemoConfig {
     @Qualifier("StaffProcessService")
     private IProcessService staffProcessService;
     @Autowired
-    @Qualifier("StaffFlatFileService")
-    private IStaffDataService staffFlatFileService;
+    @Qualifier("myFlatFileItemReader")
+    private ItemReader myFlatFileItemReader;
 
     @Autowired
-    @Qualifier("MyJdbcBatchItemWriter")
+    @Qualifier("myJdbcBatchItemWriter")
     private ItemWriter<Staff> myJdbcBatchItemWriter;
 
     @Bean
@@ -49,7 +48,7 @@ public class WriterIntoDBDemoConfig {
         String stepName = CommonUtil.getStepName(jobName, 1);
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
-                .reader(reader1(stepName))
+                .reader(myFlatFileItemReader)
                 .processor(processor1())
                 .writer(myJdbcBatchItemWriter)
                 .build();
@@ -59,11 +58,4 @@ public class WriterIntoDBDemoConfig {
         genericItemProcessor.setProcessService(staffProcessService);
         return genericItemProcessor;
     }
-
-    @Bean
-    public ItemReader<Staff> reader1(String stepName) {
-        return staffFlatFileService.getItemReader();
-    }
-
-
 }
