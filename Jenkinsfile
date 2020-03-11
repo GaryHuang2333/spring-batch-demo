@@ -1,19 +1,30 @@
 pipeline {
     agent any
 
-   tools {
-      maven "maven_3.6.2"
-   }
+    tools {
+        maven "maven_3.6.2"
+    }
+
+    parameters {
+        string(name: 'GEETINGS', defaultValue: 'Hello World', description: 'Say Hello ?')
+    }
 
     stages {
+
         stage('Compile'){
             steps {
+
                 script {
                     def pom = readMavenPom file: "pom.xml"
                     env.PROJECT_NAME = pom.artifactId
                     env.POM_VERSION = pom.version
+                    env.input_param1 = ${input_param}
                 }
+
+                echo "Geetings with ${params.GEETINGS}"
                 echo "pom info1 : ${PROJECT_NAME}-${POM_VERSION}"
+                echo "input_param1 : ${input_param1}"
+                echo "input_param2 : ${input_param}"
                 sh 'mvn clean compile'
             }
         }
