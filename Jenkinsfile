@@ -6,7 +6,7 @@ pipeline {
     }
 
     parameters {
-        string(name: 'GEETINGS', defaultValue: 'Hello World', description: 'Say Hello ?')
+        string(name: 'GREETINGS', defaultValue: 'Hello World', description: 'Say Hello ?')
     }
 
     stages {
@@ -19,10 +19,11 @@ pipeline {
                     env.PROJECT_NAME = pom.artifactId
                     env.POM_VERSION = pom.version
                     env.input_param1 = ${input_param}
+                    def greetings = ${params.GREETINGS}
                 }
 
-                echo "Geetings with ${params.GEETINGS}"
-                echo "pom info1 : ${PROJECT_NAME}-${POM_VERSION}"
+                echo "Greetings with ${greetings}"
+                echo "pom info1 : ${PROJECT_NAME} of ${POM_VERSION}"
                 echo "input_param1 : ${input_param1}"
                 echo "input_param2 : ${input_param}"
                 sh 'mvn clean compile'
