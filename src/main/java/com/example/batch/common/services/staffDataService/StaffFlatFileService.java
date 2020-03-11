@@ -1,7 +1,6 @@
 package com.example.batch.common.services.staffDataService;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.services.IStaffDataService;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;

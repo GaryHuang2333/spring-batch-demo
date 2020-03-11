@@ -1,11 +1,10 @@
 package com.example.batch.common.services.processService;
 
-import com.example.batch.common.services.IProcessService;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.stereotype.Service;
 
-@Service("PrintThreadIDProcessService")
+@Service("printThreadIDProcessService")
 public class PrintThreadIDProcessService implements IProcessService<StepContribution, ChunkContext, Object> {
 
 

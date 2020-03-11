@@ -1,8 +1,6 @@
 package com.example.batch.writerDemo.writerIntoXmlDemo;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -24,14 +22,11 @@ public class WriterIntoXmlDemoConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
-    private GenericItemProcessor genericItemProcessor;
-    @Autowired
-    @Qualifier("StaffProcessService")
-    private IProcessService staffProcessService;
+    @Qualifier("myGenericItemProcessor")
+    private ItemProcessor myGenericItemProcessor;
     @Autowired
     @Qualifier("myFlatFileItemReader")
     private ItemReader myFlatFileItemReader;
-
     @Autowired
     @Qualifier("myStaxEventItemWriter")
     private ItemStreamWriter<Staff> myStaxEventItemWriter;
@@ -49,14 +44,8 @@ public class WriterIntoXmlDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
                 .reader(myFlatFileItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myStaxEventItemWriter)
                 .build();
     }
-
-    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
-        genericItemProcessor.setProcessService(staffProcessService);
-        return genericItemProcessor;
-    }
-
 }

@@ -1,8 +1,6 @@
 package com.example.batch.readerDemo.readerFromFlatFileDemo;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -24,13 +22,11 @@ public class ReaderFromFlatFileConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
-    private GenericItemProcessor genericItemProcessor;
+    @Qualifier("myGenericItemProcessor")
+    private ItemProcessor myGenericItemProcessor;
     @Autowired
     @Qualifier("myGenericItemWriter")
     private ItemWriter myGenericItemWriter;
-    @Autowired
-    @Qualifier("StaffProcessService")
-    private IProcessService staffProcessService;
     @Autowired
     @Qualifier("myFlatFileItemReader")
     private ItemReader myFlatFileItemReader;
@@ -48,13 +44,8 @@ public class ReaderFromFlatFileConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(3)
                 .reader(myFlatFileItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myGenericItemWriter)
                 .build();
-    }
-
-    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
-        genericItemProcessor.setProcessService(staffProcessService);
-        return genericItemProcessor;
     }
 }

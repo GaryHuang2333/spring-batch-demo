@@ -1,6 +1,7 @@
 package com.example.batch.common.itemWriter;
 
 import com.example.batch.common.entities.Staff;
+import com.example.batch.common.misc.BinaryClassifier;
 import com.example.batch.common.services.staffDataService.StaffXmlService;
 import org.springframework.batch.item.ItemStreamWriter;
 import org.springframework.batch.item.ItemWriter;
@@ -13,7 +14,6 @@ import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.batch.item.xml.StaxEventItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.classify.Classifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -44,8 +44,8 @@ public class ItemWriterConfig {
     private GenericItemWriter genericItemWriter;
 
     @Autowired
-    @Qualifier("MyClassifier")
-    private Classifier<Staff, ItemStreamWriter> myClassifier;
+    @Qualifier("evenOddStaffClassifier")
+    private BinaryClassifier<Staff, ItemStreamWriter> evenOddStaffClassifier;
 
 
     /**
@@ -109,9 +109,11 @@ public class ItemWriterConfig {
 
     // Multiple items Item writer with classifier
     @Bean("myClassifierCompositeItemWriter")
-    public ClassifierCompositeItemWriter myClassifierCompositeItemWriter() {
+    public ClassifierCompositeItemWriter myClassifierCompositeItemWriter() throws Exception {
+        evenOddStaffClassifier.setBinaryObject(myFlatFileItemWriter(), myStaxEventItemWriter());
+
         ClassifierCompositeItemWriter writer = new ClassifierCompositeItemWriter();
-        writer.setClassifier(myClassifier);
+        writer.setClassifier(evenOddStaffClassifier);
 
         return writer;
     }

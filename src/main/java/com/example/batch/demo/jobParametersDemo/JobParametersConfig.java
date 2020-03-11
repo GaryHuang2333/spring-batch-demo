@@ -2,8 +2,8 @@ package com.example.batch.demo.jobParametersDemo;
 
 import com.example.batch.common.listeners.MyJobListener;
 import com.example.batch.common.listeners.MyStepListener;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.services.StepService;
+import com.example.batch.common.services.processService.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -21,7 +21,7 @@ public class JobParametersConfig {
     @Autowired
     private StepService stepService;
     @Autowired
-    @Qualifier("PrintParametersProcessService")
+    @Qualifier("printParametersProcessService")
     private IProcessService printParametersProcessService123;
     @Autowired
     private MyJobListener myJobListener;

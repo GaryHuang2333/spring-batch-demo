@@ -1,8 +1,6 @@
 package com.example.batch.writerDemo.writerIntoMutiDestinationDemo;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -25,10 +23,8 @@ public class WriterIntoMultiDestinationDemoConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
-    private GenericItemProcessor genericItemProcessor;
-    @Autowired
-    @Qualifier("StaffProcessService")
-    private IProcessService staffProcessService;
+    @Qualifier("myGenericItemProcessor")
+    private ItemProcessor myGenericItemProcessor;
     @Autowired
     @Qualifier("myFlatFileItemReader")
     private ItemReader myFlatFileItemReader;
@@ -62,7 +58,7 @@ public class WriterIntoMultiDestinationDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
                 .reader(myFlatFileItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myCompositeItemWriter)
                 .build();
     }
@@ -80,16 +76,10 @@ public class WriterIntoMultiDestinationDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
                 .reader(myFlatFileItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myClassifierCompositeItemWriter)
                 .stream(myFlatFileItemWriter)
                 .stream(myStaxEventItemWriter)
                 .build();
     }
-
-    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
-        genericItemProcessor.setProcessService(staffProcessService);
-        return genericItemProcessor;
-    }
-
 }

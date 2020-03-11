@@ -1,12 +1,11 @@
 package com.example.batch.common.services.processService;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.services.IProcessService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service("StaffProcessService")
+@Service("staffProcessService")
 public class StaffProcessService implements IProcessService<Staff, Object, Staff> {
     @Override
     public Staff process(Staff staff) {

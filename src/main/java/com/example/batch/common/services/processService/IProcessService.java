@@ -1,4 +1,4 @@
-package com.example.batch.common.services;
+package com.example.batch.common.services.processService;
 
 public interface IProcessService<I, T, O> {
     O process(I input);

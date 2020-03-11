@@ -1,8 +1,8 @@
 package com.example.batch.demo.jobListenerDemo;
 
 import com.example.batch.common.listeners.MyStepListener;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.services.StepService;
+import com.example.batch.common.services.processService.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -30,7 +30,7 @@ public class JobListenerDemoConfig {
     @Autowired
     private StepService stepService;
     @Autowired
-    @Qualifier("PrintThreadIDProcessService")
+    @Qualifier("printThreadIDProcessService")
     private IProcessService printThreadIDProcessService;
 
     @Bean

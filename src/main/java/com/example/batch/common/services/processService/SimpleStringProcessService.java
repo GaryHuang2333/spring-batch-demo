@@ -1,9 +1,8 @@
 package com.example.batch.common.services.processService;
 
-import com.example.batch.common.services.IProcessService;
 import org.springframework.stereotype.Service;
 
-@Service("SimpleStringProcessService")
+@Service("simpleStringProcessService")
 public class SimpleStringProcessService implements IProcessService<String, Object, String> {
     @Override
     public String process(String input) {

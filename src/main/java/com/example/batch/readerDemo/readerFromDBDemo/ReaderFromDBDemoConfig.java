@@ -1,8 +1,7 @@
 package com.example.batch.readerDemo.readerFromDBDemo;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
+import com.example.batch.common.services.processService.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -27,9 +26,10 @@ public class ReaderFromDBDemoConfig {
     @Qualifier("myGenericItemWriter")
     private ItemWriter myGenericItemWriter;
     @Autowired
-    private GenericItemProcessor genericItemProcessor;
+    @Qualifier("myGenericItemProcessor")
+    private ItemProcessor myGenericItemProcessor;
     @Autowired
-    @Qualifier("StaffProcessService")
+    @Qualifier("staffProcessService")
     private IProcessService staffProcessService;
     @Autowired
     @Qualifier("myJdbcPagingItemReader")
@@ -48,13 +48,8 @@ public class ReaderFromDBDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(2)
                 .reader(myJdbcPagingItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myGenericItemWriter)
                 .build();
-    }
-
-    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
-        genericItemProcessor.setProcessService(staffProcessService);
-        return genericItemProcessor;
     }
 }

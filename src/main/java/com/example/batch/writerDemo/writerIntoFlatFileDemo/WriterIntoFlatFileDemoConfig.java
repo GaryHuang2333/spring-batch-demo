@@ -1,8 +1,6 @@
 package com.example.batch.writerDemo.writerIntoFlatFileDemo;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -24,10 +22,8 @@ public class WriterIntoFlatFileDemoConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
-    private GenericItemProcessor genericItemProcessor;
-    @Autowired
-    @Qualifier("StaffProcessService")
-    private IProcessService staffProcessService;
+    @Qualifier("myGenericItemProcessor")
+    private ItemProcessor myGenericItemProcessor;
     @Autowired
     @Qualifier("myFlatFileItemReader")
     private ItemReader myFlatFileItemReader;
@@ -48,13 +44,8 @@ public class WriterIntoFlatFileDemoConfig {
         return stepBuilderFactory.get(stepName)
                 .<Staff, Staff>chunk(10)
                 .reader(myFlatFileItemReader)
-                .processor(processor1())
+                .processor(myGenericItemProcessor)
                 .writer(myFlatFileItemWriter)
                 .build();
-    }
-
-    private ItemProcessor<? super Staff, ? extends Staff> processor1() {
-        genericItemProcessor.setProcessService(staffProcessService);
-        return genericItemProcessor;
     }
 }

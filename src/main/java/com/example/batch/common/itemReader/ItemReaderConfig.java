@@ -1,7 +1,7 @@
 package com.example.batch.common.itemReader;
 
 import com.example.batch.common.entities.Staff;
-import com.example.batch.common.services.IStaffDataService;
+import com.example.batch.common.services.staffDataService.IStaffDataService;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.MultiResourceItemReader;

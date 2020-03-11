@@ -1,6 +1,6 @@
 package com.example.batch.common.itemProcessor;
 
-import com.example.batch.common.services.IProcessService;
+import com.example.batch.common.services.processService.IProcessService;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 

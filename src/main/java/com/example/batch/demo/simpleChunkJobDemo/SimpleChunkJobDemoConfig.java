@@ -1,7 +1,7 @@
 package com.example.batch.demo.simpleChunkJobDemo;
 
 import com.example.batch.common.itemProcessor.GenericItemProcessor;
-import com.example.batch.common.services.IProcessService;
+import com.example.batch.common.services.processService.IProcessService;
 import com.example.batch.common.utils.CommonUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -31,7 +31,7 @@ public class SimpleChunkJobDemoConfig {
     @Autowired
     private GenericItemProcessor genericItemProcessor;
     @Autowired
-    @Qualifier("SimpleStringProcessService")
+    @Qualifier("simpleStringProcessService")
     private IProcessService simpleStringProcessService;
 
     @Bean
