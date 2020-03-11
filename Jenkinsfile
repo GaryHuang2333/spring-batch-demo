@@ -1,29 +1,31 @@
 pipeline {
     agent any
 
+   tools {
+      maven "maven_3.6.2"
+   }
+
     stages {
         stage('Compile'){
             steps {
-                withMaven(maven : 'maven_3.6.2'){
-                    echo "maven info : ${POM_DISPLAYNAME}-${POM_VERSION}"
-                    sh 'mvn clean compile'
+                script {
+                    def pom = readMavenPom file: "pom.xml"
+                    env.PROJECT_NAME = pom.artifactId
+                    env.POM_VERSION = pom.version
                 }
+                echo "pom info1 : ${PROJECT_NAME}-${POM_VERSION}"
+                sh 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                withMaven(maven : 'maven_3.6.2'){
                     sh 'mvn test'
-                }
             }
         }
         stage('Deploy') {
             steps {
-                withMaven(maven : 'maven_3.6.2'){
-                    echo "maven info : ${POM_DISPLAYNAME}-${POM_VERSION}"
                     sh 'mvn deploy'
-                }
             }
         }
     }
