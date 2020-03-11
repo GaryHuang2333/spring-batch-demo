@@ -18,7 +18,7 @@ pipeline {
                     def pom = readMavenPom file: "pom.xml"
                     env.PROJECT_NAME = pom.artifactId
                     env.POM_VERSION = pom.version
-                    env.input_param1 = ${input_param}
+                    //env.input_param1 = ${input_param}
                 }
 
                 echo "Greetings with ${params.greetings}"
